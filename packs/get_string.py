@@ -14,18 +14,18 @@ def get_string(conn_string, args):
             'ab_dev': {
                 'name': 'sqlserver',
                 'user': b'nome de usuário criptografado',
-		'password': b'password criptografado'
+                        'password': b'password criptografado',
                 'driver': 'com.microsoft.sqlserver.jdbc.SQLServerDriver',
                 'url': f'jdbc:sqlserver://IP\DESENV:PORT;databaseName={args.database}',
-                'schema': 'dbo'
-            }
+                'schema': 'dbo',
+            },
             'ab_hml': {
                 'name': 'sqlserver',
                 'user': b'nome de usuário criptografado',
-		'password': b'password criptografado'
+                'password': b'password criptografado',
                 'driver': 'com.microsoft.sqlserver.jdbc.SQLServerDriver',
                 'url': f'jdbc:sqlserver://IP\QUALID:PORT;databaseName={args.database}',
-                'schema': 'dbo'
+                'schema': 'dbo',
             },
             'ab_prd': {
                 'name': 'sqlserver',
