@@ -1,0 +1,45 @@
+#!/usr/local/bin/python3.6
+# _*_ coding:utf-8 _*_
+# ----------------------------------------- #
+# @author Robert Carlos                     #
+# email robert.carlos@linuxmail.org         #
+# 2020-set (CC BY 3.0 BR)                   #
+
+import argparse
+import logging
+import sys
+
+from tabulate import tabulate
+
+from packs.conn import conn
+from packs.decodex import decodex
+from packs.get_string import get_string
+
+logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s: %(message)s',
+                    datefmt='%d/%m/%Y %I:%M:%S %p', level=logging.INFO)
+log = logging.getLogger(__name__)
+
+
+def main(f_conn, f_decodex, f_get_string, string_, arguments):
+
+    res = f_conn(f_decodex(string_, f_get_string('sqlserver', arguments)), decodex(string_, f_get_string('redshift', arguments)),
+                 arguments.database, arguments.tables)
+    log.info('\n' + tabulate(res, headers=[
+        'table(s)', 'sqlserver', 'redshift'], showindex="always", tablefmt="psql", numalign="right"))
+
+
+if __name__ == "__main__":
+    string_ = 'tre30r'
+    parser = argparse.ArgumentParser(
+        description="""App comparador quantitativo de tabelas de diferentes bases de dados.
+        Argumentos default []""")
+    parser.add_argument('-e', action='store', dest='ambiente',
+                        default='dev', help='[dev], hml ou prd')
+    parser.add_argument('-d', action='store', dest='database',
+                        default='seguros_db', help='[seguros_db] ou assistencia_db')
+    parser.add_argument('-c', action='store', dest='category',
+                        default='ab', help='[ab] ou abs')
+    parser.add_argument('-t', action='store', dest='tables',
+                        help='uma ou mais tabelas separadas por vírgula')
+    arguments = parser.parse_args()
+    main(conn, decodex, get_string, string_, arguments)
